@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "compile",
+      "type": "shell",
+      "command": "gfortran",
+      "args": [
+        "-g",
+        "${workspaceRoot}\\src\\*",  
+        "-o", 
+        "${workspaceRoot}\\${fileBasenameNoExtension}.exe"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

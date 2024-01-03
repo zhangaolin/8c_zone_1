@@ -1,0 +1,23 @@
+{
+    "cmake.configureOnOpen": false,
+    "conventionalCommits.scopes": [
+        "GitControls",
+        "VSCodeControls",
+        "DoxyGeneratorControls",
+        "TestsControls",
+        "SrcControls",
+        "SrcMainControls",
+        "SrcInputControls",
+        "SrcOutputControls",
+        "SrcTHMeshControls",
+        "SrcSteadyTHSolverControls",
+        "SrcConstantsDefinitionControls",
+        "SrcVariablesDefinitionControls",
+        "SrcCharacteristicNumbersControls",
+        "SrcFlowSolverControls",
+        "SrcPhysicalPropertiesControls",
+        "SrcTemperatureSolverControls",
+        "SrcTHCompositionSolverControls",
+        "SrcTHMathmaticalCalControls",
+    ]
+}
