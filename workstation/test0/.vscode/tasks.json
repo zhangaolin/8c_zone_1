@@ -7,7 +7,7 @@
       "command": "gfortran",
       "args": [
         "-g",
-        "${workspaceRoot}\\*.f90",  
+        "${workspaceRoot}\\src/*.f90",  
         "-o", 
         "${workspaceRoot}\\${fileBasenameNoExtension}.exe"
       ],

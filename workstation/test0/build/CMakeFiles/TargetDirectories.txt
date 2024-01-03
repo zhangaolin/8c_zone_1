@@ -1,0 +1,5 @@
+C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles/edit_cache.dir
+C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles/rebuild_cache.dir
+C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/solid.dir
+C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/edit_cache.dir
+C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/rebuild_cache.dir
