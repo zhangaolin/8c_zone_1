@@ -147,6 +147,19 @@ src/CMakeFiles/solid.dir/globalTSvariables.f90.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling Fortran source to assembly CMakeFiles/solid.dir/globalTSvariables.f90.s"
 	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src && C:/MinGW/bin/gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/globalTSvariables.f90 -o CMakeFiles/solid.dir/globalTSvariables.f90.s
 
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj: src/CMakeFiles/solid.dir/flags.make
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj: C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverSteadyTSsolver.f90
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building Fortran object src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj"
+	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src && C:/MinGW/bin/gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverSteadyTSsolver.f90 -o CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj
+
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing Fortran source to CMakeFiles/solid.dir/driverSteadyTSsolver.f90.i"
+	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src && C:/MinGW/bin/gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverSteadyTSsolver.f90 > CMakeFiles/solid.dir/driverSteadyTSsolver.f90.i
+
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling Fortran source to assembly CMakeFiles/solid.dir/driverSteadyTSsolver.f90.s"
+	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src && C:/MinGW/bin/gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverSteadyTSsolver.f90 -o CMakeFiles/solid.dir/driverSteadyTSsolver.f90.s
+
 # Object files for target solid
 solid_OBJECTS = \
 "CMakeFiles/solid.dir/program_main.f90.obj" \
@@ -154,7 +167,8 @@ solid_OBJECTS = \
 "CMakeFiles/solid.dir/driverthinput_test1.f90.obj" \
 "CMakeFiles/solid.dir/driverTSoutput.f90.obj" \
 "CMakeFiles/solid.dir/globalTSconstants.f90.obj" \
-"CMakeFiles/solid.dir/globalTSvariables.f90.obj"
+"CMakeFiles/solid.dir/globalTSvariables.f90.obj" \
+"CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj"
 
 # External object files for target solid
 solid_EXTERNAL_OBJECTS =
@@ -165,9 +179,10 @@ src/solid.exe: src/CMakeFiles/solid.dir/driverthinput_test1.f90.obj
 src/solid.exe: src/CMakeFiles/solid.dir/driverTSoutput.f90.obj
 src/solid.exe: src/CMakeFiles/solid.dir/globalTSconstants.f90.obj
 src/solid.exe: src/CMakeFiles/solid.dir/globalTSvariables.f90.obj
+src/solid.exe: src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj
 src/solid.exe: src/CMakeFiles/solid.dir/build.make
 src/solid.exe: src/CMakeFiles/solid.dir/objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking Fortran executable solid.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking Fortran executable solid.exe"
 	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src && "C:/Program Files/CMake/bin/cmake.exe" -E rm -f CMakeFiles/solid.dir/objects.a
 	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src && C:/MinGW/bin/ar.exe qc CMakeFiles/solid.dir/objects.a @CMakeFiles/solid.dir/objects1.rsp
 	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src && C:/MinGW/bin/gfortran.exe -g -Wl,--whole-archive CMakeFiles/solid.dir/objects.a -Wl,--no-whole-archive -o solid.exe -Wl,--out-implib,libsolid.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_Fortran
   "C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/dataprocess.f90" "C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/solid.dir/dataprocess.f90.obj"
+  "C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverSteadyTSsolver.f90" "C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj"
   "C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverTSoutput.f90" "C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/solid.dir/driverTSoutput.f90.obj"
   "C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverthinput_test1.f90" "C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/solid.dir/driverthinput_test1.f90.obj"
   "C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/globalTSconstants.f90" "C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/CMakeFiles/solid.dir/globalTSconstants.f90.obj"

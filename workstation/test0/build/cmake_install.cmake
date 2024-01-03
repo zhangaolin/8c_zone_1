@@ -40,6 +40,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/src/cmake_install.cmake")
+  include("C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/unitTest/cmake_install.cmake")
 
 endif()
 

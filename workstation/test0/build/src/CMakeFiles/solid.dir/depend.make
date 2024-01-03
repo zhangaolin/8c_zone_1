@@ -11,8 +11,19 @@ src/CMakeFiles/solid.dir/dataprocess.mod.stamp: src/CMakeFiles/solid.dir/datapro
 src/CMakeFiles/solid.dir/dataprocess.f90.obj.provides.build:
 	$(CMAKE_COMMAND) -E touch src/CMakeFiles/solid.dir/dataprocess.f90.obj.provides.build
 src/CMakeFiles/solid.dir/build: src/CMakeFiles/solid.dir/dataprocess.f90.obj.provides.build
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj: src/CMakeFiles/solid.dir/dataprocess.mod.stamp
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj: src/CMakeFiles/solid.dir/driver_input_test.mod.stamp
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj: src/CMakeFiles/solid.dir/globaltsconstants.mod.stamp
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj: src/CMakeFiles/solid.dir/globaltsvariables.mod.stamp
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj.provides.build: src/CMakeFiles/solid.dir/driversteadytssolver.mod.stamp
+src/CMakeFiles/solid.dir/driversteadytssolver.mod.stamp: src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj
+	$(CMAKE_COMMAND) -E cmake_copy_f90_mod src/driversteadytssolver.mod src/CMakeFiles/solid.dir/driversteadytssolver.mod.stamp GNU
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj.provides.build:
+	$(CMAKE_COMMAND) -E touch src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj.provides.build
+src/CMakeFiles/solid.dir/build: src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj.provides.build
 src/CMakeFiles/solid.dir/driverTSoutput.f90.obj: src/CMakeFiles/solid.dir/dataprocess.mod.stamp
 src/CMakeFiles/solid.dir/driverTSoutput.f90.obj: src/CMakeFiles/solid.dir/driver_input_test.mod.stamp
+src/CMakeFiles/solid.dir/driverTSoutput.f90.obj: src/CMakeFiles/solid.dir/driversteadytssolver.mod.stamp
 src/CMakeFiles/solid.dir/driverTSoutput.f90.obj: src/CMakeFiles/solid.dir/globaltsconstants.mod.stamp
 src/CMakeFiles/solid.dir/driverTSoutput.f90.obj: src/CMakeFiles/solid.dir/globaltsvariables.mod.stamp
 src/CMakeFiles/solid.dir/driverTSoutput.f90.obj.provides.build: src/CMakeFiles/solid.dir/drivertsoutput.mod.stamp

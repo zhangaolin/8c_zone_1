@@ -30,7 +30,7 @@ contains
 ! end subroutine
 
 
-subroutine geo_process() !计算节块的r值和体积
+subroutine geo_process() !calculate radial length and volume for every node
     !r_calculate
     allocate(r(num_r,num_z,num_theta))  
         do j=1,num_theta
@@ -54,7 +54,7 @@ end do
 end subroutine
 
 
-subroutine alpha_test0() !用于test0,直接给每种材料的alpha赋0值
+subroutine alpha_test0() !only for test0,give alpha as 0 for every node
     allocate(alpha(num_r,num_z,num_theta))
     do i=1,num_r
         do j=1,num_theta
@@ -69,15 +69,15 @@ subroutine alpha_test0() !用于test0,直接给每种材料的alpha赋0值
     end do
 end subroutine
 
-subroutine q_calculate() !用于test0,直接给每种材料的alpha赋0值
+subroutine q_calculate() 
     allocate(power_den(num_r,num_z,num_theta))
     allocate(q_vir(num_r,num_z,num_theta))
     do i=1,num_r
         do j=1,num_theta
             do k=1,num_z
-                if(cfg(i,j,k)==1.)then
-                    power_den(i,j,k)=0
-                else if(cfg(i,j,k)==2.)then
+                if(cfg(i,j,k)==1.)then ! 1D problem, material A
+                    power_den(i,j,k)=1500000
+                else if(cfg(i,j,k)==2.)then ! 1D problem, material B
                     power_den(i,j,k)=0   
                 end if 
                 q_vir(i,j,k)=power_den(i,j,k)+alpha(i,j,k)*tg(i,j,k)
@@ -89,8 +89,8 @@ end subroutine
 subroutine data_processing() 
     IMPLICIT NONE
     call geo_process()
-    ! call alpha_test0()
-    ! call q_calculate()
+    call alpha_test0()
+    call q_calculate()
     !call channel_approximation()
    ! call alpha_calculation()
 end subroutine

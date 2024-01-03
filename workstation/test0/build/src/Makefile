@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = C:/Users/Lenovo/Desktop/thermal/workstation/test0/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	"C:/Program Files/CMake/bin/ctest.exe" --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
@@ -153,6 +163,30 @@ dataprocess.s: dataprocess.f90.s
 dataprocess.f90.s:
 	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/dataprocess.f90.s
 .PHONY : dataprocess.f90.s
+
+driverSteadyTSsolver.obj: driverSteadyTSsolver.f90.obj
+.PHONY : driverSteadyTSsolver.obj
+
+# target to build an object file
+driverSteadyTSsolver.f90.obj:
+	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj
+.PHONY : driverSteadyTSsolver.f90.obj
+
+driverSteadyTSsolver.i: driverSteadyTSsolver.f90.i
+.PHONY : driverSteadyTSsolver.i
+
+# target to preprocess a source file
+driverSteadyTSsolver.f90.i:
+	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.i
+.PHONY : driverSteadyTSsolver.f90.i
+
+driverSteadyTSsolver.s: driverSteadyTSsolver.f90.s
+.PHONY : driverSteadyTSsolver.s
+
+# target to generate assembly for a file
+driverSteadyTSsolver.f90.s:
+	cd C:/Users/Lenovo/Desktop/thermal/workstation/test0/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.s
+.PHONY : driverSteadyTSsolver.f90.s
 
 driverTSoutput.obj: driverTSoutput.f90.obj
 .PHONY : driverTSoutput.obj
@@ -282,10 +316,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... solid"
 	@echo "... dataprocess.obj"
 	@echo "... dataprocess.i"
 	@echo "... dataprocess.s"
+	@echo "... driverSteadyTSsolver.obj"
+	@echo "... driverSteadyTSsolver.i"
+	@echo "... driverSteadyTSsolver.s"
 	@echo "... driverTSoutput.obj"
 	@echo "... driverTSoutput.i"
 	@echo "... driverTSoutput.s"

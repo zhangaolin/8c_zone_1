@@ -8,6 +8,10 @@ FILE(REMOVE
   "DRIVER_INPUT_TEST.mod"
   "CMakeFiles/solid.dir/driver_input_test.mod.stamp"
 
+  "driversteadytssolver.mod"
+  "DRIVERSTEADYTSSOLVER.mod"
+  "CMakeFiles/solid.dir/driversteadytssolver.mod.stamp"
+
   "drivertsoutput.mod"
   "DRIVERTSOUTPUT.mod"
   "CMakeFiles/solid.dir/drivertsoutput.mod.stamp"

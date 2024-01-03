@@ -40,6 +40,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.28.1/CMakeRCCompiler.cmake"
   "CMakeFiles/3.28.1/CMakeSystem.cmake"
   "C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/CMakeLists.txt"
+  "C:/Users/Lenovo/Desktop/thermal/workstation/test0/unitTest/CMakeLists.txt"
   )
 
 # The corresponding makefile is:
@@ -52,9 +53,11 @@ set(CMAKE_MAKEFILE_OUTPUTS
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "unitTest/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/solid.dir/DependInfo.cmake"
+  "unitTest/CMakeFiles/test_solver.dir/DependInfo.cmake"
   )

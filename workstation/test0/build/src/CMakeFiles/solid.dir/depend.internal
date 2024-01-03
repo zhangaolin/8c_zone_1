@@ -3,6 +3,8 @@
 
 src/CMakeFiles/solid.dir/dataprocess.f90.obj
  C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/dataprocess.f90
+src/CMakeFiles/solid.dir/driverSteadyTSsolver.f90.obj
+ C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverSteadyTSsolver.f90
 src/CMakeFiles/solid.dir/driverTSoutput.f90.obj
  C:/Users/Lenovo/Desktop/thermal/workstation/test0/src/driverTSoutput.f90
 src/CMakeFiles/solid.dir/driverthinput_test1.f90.obj

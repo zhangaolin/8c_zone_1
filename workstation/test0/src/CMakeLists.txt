@@ -5,6 +5,6 @@ SET(SOURCE_FILES
 	driverTSoutput.f90
 	globalTSconstants.f90
 	globalTSvariables.f90
-	program_main.f90
+	driverSteadyTSsolver.f90
 	)
 ADD_EXECUTABLE(solid ${SOURCE_FILES})

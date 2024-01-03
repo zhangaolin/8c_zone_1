@@ -73,17 +73,17 @@ contains
                         end if
                     end do 
                 end do
-            case('power_density')
-                allocate(power_den(num_r,num_theta,num_z))
-                do j=1,num_z
-                    do i = 1,num_theta
-                        if(i == 1. .and. j==1.) then
-                            read(unit=aline, fmt=*, iostat=io_error) keyword,power_den(1:num_r,1,j)
-                        else
-                            read(unit=8, fmt=*, iostat=io_error) power_den(1:num_r, i,j)
-                        end if
-                    end do 
-                end do
+            ! case('power_density')
+            !     allocate(power_den(num_r,num_theta,num_z))
+            !     do j=1,num_z
+            !         do i = 1,num_theta
+            !             if(i == 1. .and. j==1.) then
+            !                 read(unit=aline, fmt=*, iostat=io_error) keyword,power_den(1:num_r,1,j)
+            !             else
+            !                 read(unit=8, fmt=*, iostat=io_error) power_den(1:num_r, i,j)
+            !             end if
+            !         end do 
+            !     end do
         end select
     end do
     filename = "output.dat"

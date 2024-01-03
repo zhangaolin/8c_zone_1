@@ -64,14 +64,17 @@ CMAKE_BINARY_DIR = C:/Users/Lenovo/Desktop/thermal/workstation/test0/build
 
 # The main recursive "all" target.
 all: src/all
+all: unitTest/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: src/preinstall
+preinstall: unitTest/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: src/clean
+clean: unitTest/clean
 .PHONY : clean
 
 #=============================================================================
@@ -90,18 +93,33 @@ src/clean: src/CMakeFiles/solid.dir/clean
 .PHONY : src/clean
 
 #=============================================================================
+# Directory level rules for directory unitTest
+
+# Recursive "all" directory target.
+unitTest/all: unitTest/CMakeFiles/test_solver.dir/all
+.PHONY : unitTest/all
+
+# Recursive "preinstall" directory target.
+unitTest/preinstall:
+.PHONY : unitTest/preinstall
+
+# Recursive "clean" directory target.
+unitTest/clean: unitTest/CMakeFiles/test_solver.dir/clean
+.PHONY : unitTest/clean
+
+#=============================================================================
 # Target rules for target src/CMakeFiles/solid.dir
 
 # All Build rule for target.
 src/CMakeFiles/solid.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target solid"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target solid"
 .PHONY : src/CMakeFiles/solid.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/solid.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/solid.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/solid.dir/rule
@@ -114,6 +132,32 @@ solid: src/CMakeFiles/solid.dir/rule
 src/CMakeFiles/solid.dir/clean:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/clean
 .PHONY : src/CMakeFiles/solid.dir/clean
+
+#=============================================================================
+# Target rules for target unitTest/CMakeFiles/test_solver.dir
+
+# All Build rule for target.
+unitTest/CMakeFiles/test_solver.dir/all:
+	$(MAKE) $(MAKESILENT) -f unitTest/CMakeFiles/test_solver.dir/build.make unitTest/CMakeFiles/test_solver.dir/depend
+	$(MAKE) $(MAKESILENT) -f unitTest/CMakeFiles/test_solver.dir/build.make unitTest/CMakeFiles/test_solver.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles --progress-num=9,10,11,12,13,14,15,16 "Built target test_solver"
+.PHONY : unitTest/CMakeFiles/test_solver.dir/all
+
+# Build rule for subdir invocation for target.
+unitTest/CMakeFiles/test_solver.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles 8
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 unitTest/CMakeFiles/test_solver.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/Lenovo/Desktop/thermal/workstation/test0/build/CMakeFiles 0
+.PHONY : unitTest/CMakeFiles/test_solver.dir/rule
+
+# Convenience name for target.
+test_solver: unitTest/CMakeFiles/test_solver.dir/rule
+.PHONY : test_solver
+
+# clean rule for target.
+unitTest/CMakeFiles/test_solver.dir/clean:
+	$(MAKE) $(MAKESILENT) -f unitTest/CMakeFiles/test_solver.dir/build.make unitTest/CMakeFiles/test_solver.dir/clean
+.PHONY : unitTest/CMakeFiles/test_solver.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

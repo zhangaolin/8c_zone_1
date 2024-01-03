@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = C:/Users/Lenovo/Desktop/thermal/workstation/test0/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	"C:/Program Files/CMake/bin/ctest.exe" --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
@@ -129,6 +139,19 @@ solid/fast:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/solid.dir/build.make src/CMakeFiles/solid.dir/build
 .PHONY : solid/fast
 
+#=============================================================================
+# Target rules for targets named test_solver
+
+# Build rule for target.
+test_solver: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_solver
+.PHONY : test_solver
+
+# fast build rule for target.
+test_solver/fast:
+	$(MAKE) $(MAKESILENT) -f unitTest/CMakeFiles/test_solver.dir/build.make unitTest/CMakeFiles/test_solver.dir/build
+.PHONY : test_solver/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -137,7 +160,9 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... solid"
+	@echo "... test_solver"
 .PHONY : help
 
 
