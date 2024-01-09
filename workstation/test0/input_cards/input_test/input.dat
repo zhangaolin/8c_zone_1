@@ -5,33 +5,33 @@ PebbleDiameter 3
 Axial_node_num  4
 Radial_node_num  4
 Circumferential_node_num  4 
-Axial_node_size 10 10 10 10
-Radial_node_size 10 10 10 9.5
+Axial_node_size 25 25 10 10
+Radial_node_size 5 5 5 5
 Circumferential_node_size 90 90 90 90
 !Boundary Condition
-bc_r_left 1
-bc_r_right 3
+bc_axial_left 1
+bc_axial_right 3
 bc_side 1
 !config(z1)
-config               1 2 3 4
-                     5 6 7 8
-                     1 1 1 1
-                     1 1 1 1
-
-                     2 1 1 1
+config               1 1 1 1 
                      1 1 1 1
                      1 1 1 1
                      1 1 1 1
 
-                     3 1 1 1
-                     1 1 1 1
-                     1 1 1 10
-                     1 1 1 1
-                     
-                     4 1 1 1
                      1 1 1 1
                      1 1 1 1
                      1 1 1 1
+                     1 1 1 1
+
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
+                                        
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
 
 T_gas_solidmodule    1 1 1 1
                      1 1 1 1

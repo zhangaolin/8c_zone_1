@@ -9,7 +9,8 @@ IMPLICIT NONE
 contains
 
 ! subroutine channel_approximation() !流道近似，调整节块尺寸
-
+!implicit none
+!!================undone==================================
 ! end subroutine
 
 ! subroutine alpha_calculation() !计算每个节块的固气换热系数
@@ -50,11 +51,11 @@ subroutine geo_process() !calculate radial length and volume for every node
             volume_node(i,j,k)=pi*sub_r(i)*sub_theta(j)*sub_z(k)*r(i,j,k)/180.0d0
         end do
     end do
-end do
+    end do
 end subroutine
 
 
-subroutine alpha_test0() !only for test0,give alpha as 0 for every node
+subroutine alpha_calculate() !only for test0,give alpha as 0 for every node
     allocate(alpha(num_r,num_z,num_theta))
     do i=1,num_r
         do j=1,num_theta
@@ -89,7 +90,7 @@ end subroutine
 subroutine data_processing() 
     IMPLICIT NONE
     call geo_process()
-    call alpha_test0()
+    call alpha_calculate()
     call q_calculate()
     !call channel_approximation()
    ! call alpha_calculation()

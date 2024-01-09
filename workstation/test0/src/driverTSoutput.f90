@@ -12,12 +12,8 @@ contains
 
     subroutine print_ts_output()    
     write(iunit,*)'output for heat conduction module'
-
-    call chase_test()
-    
-
-
-
+    write(iunit,*)'================================='
+    write(iunit,*)'t_solid_average:',ts_ave(:,:,1)
     end subroutine
 
 end module

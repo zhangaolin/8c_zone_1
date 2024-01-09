@@ -55,4 +55,5 @@ src/CMakeFiles/solid.dir/globalTSvariables.f90.obj.provides.build:
 src/CMakeFiles/solid.dir/build: src/CMakeFiles/solid.dir/globalTSvariables.f90.obj.provides.build
 src/CMakeFiles/solid.dir/program_main.f90.obj: src/CMakeFiles/solid.dir/dataprocess.mod.stamp
 src/CMakeFiles/solid.dir/program_main.f90.obj: src/CMakeFiles/solid.dir/driver_input_test.mod.stamp
+src/CMakeFiles/solid.dir/program_main.f90.obj: src/CMakeFiles/solid.dir/driversteadytssolver.mod.stamp
 src/CMakeFiles/solid.dir/program_main.f90.obj: src/CMakeFiles/solid.dir/drivertsoutput.mod.stamp

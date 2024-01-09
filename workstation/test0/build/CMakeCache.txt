@@ -137,7 +137,7 @@ CMAKE_Fortran_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 CMAKE_GNUtoMS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/thermal
+CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/Final
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/MinGW/bin/ld.exe
@@ -181,7 +181,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=thermal
+CMAKE_PROJECT_NAME:STATIC=Final
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=C:/MinGW/bin/ranlib.exe
@@ -267,13 +267,13 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-thermal_BINARY_DIR:STATIC=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build
+Final_BINARY_DIR:STATIC=C:/Users/Lenovo/Desktop/thermal/workstation/test0/build
 
 //Value Computed by CMake
-thermal_IS_TOP_LEVEL:STATIC=ON
+Final_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-thermal_SOURCE_DIR:STATIC=C:/Users/Lenovo/Desktop/thermal/workstation/test0
+Final_SOURCE_DIR:STATIC=C:/Users/Lenovo/Desktop/thermal/workstation/test0
 
 
 ########################

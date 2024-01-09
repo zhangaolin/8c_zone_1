@@ -34,11 +34,11 @@ contains
             case('Circumferential_node_size')
                 allocate(sub_theta(num_theta))
                 read(unit=aline,fmt=*,iostat=io_error) keyword,sub_theta(1:num_theta)
-            case('bc_r_left')
-                read(unit=aline,fmt=*,iostat=io_error) keyword,bc_u
-            case('bc_r_right')
+            case('bc_axial_left')
                 read(unit=aline,fmt=*,iostat=io_error) keyword,bc_d
-            case('bc_r_side')
+            case('bc_axial_right')
+                read(unit=aline,fmt=*,iostat=io_error) keyword,bc_u
+            case('bc_side')
                 read(unit=aline,fmt=*,iostat=io_error) keyword,bc_s
             case('config')
                 allocate(cfg(num_r,num_theta,num_z))
