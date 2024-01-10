@@ -10,16 +10,4 @@ SET(SOURCE_FILES
 
 ADD_EXECUTABLE(test_solver ${SOURCE_FILES})
 
-# SET(SOURCE_FILES
-
-#     )
-
-# ADD_EXECUTABLE(test_cuboid ${SOURCE_FILES})
-
-# SET(SOURCE_FILES
-
-#     )
-
-# ADD_EXECUTABLE(test_triangular_prism ${SOURCE_FILES})
-
 ADD_TEST(NAME unitTest_solid COMMAND test_solid)

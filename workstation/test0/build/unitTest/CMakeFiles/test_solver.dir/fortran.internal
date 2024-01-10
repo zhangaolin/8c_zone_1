@@ -1,8 +1,0 @@
-# The fortran modules provided by this target.
-provides
- dataprocess.mod
- driver_input_test.mod
- driversteadytssolver.mod
- drivertsoutput.mod
- globaltsconstants.mod
- globaltsvariables.mod

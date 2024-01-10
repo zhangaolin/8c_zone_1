@@ -87,6 +87,73 @@ subroutine q_calculate()
     end do
 end subroutine
 
+subroutine chase()
+    implicit none
+    u_ch(1)=b_ch(1)
+    y_ch(1)=d_ch(1)
+    do i_ch=2,num_ch
+        l_ch(i_ch)=a_ch(i_ch)/u_ch(i_ch-1)
+        u_ch(i_ch)=b_ch(i_ch)-l_ch(i_ch)*c_ch(i_ch-1)
+        y_ch(i_ch)=d_ch(i_ch)-l_ch(i_ch)*y_ch(i_ch-1)
+    end do
+    x_ch(num_ch)=y_ch(num_ch)/u_ch(num_ch)
+    do i_ch=num_ch-1,1,-1
+        x_ch(i_ch)=(y_ch(i_ch)-c_ch(i_ch)*x_ch(i_ch+1))/u_ch(i_ch)
+    end do    
+end subroutine
+
+
+subroutine lu_solve()
+    implicit none
+    l_lu = 0.0d0
+    u_lu = 0.0d0
+    y_lu = 0.0d0
+    x_lu = 0.0d0
+    do j_lu = 1, n_lu
+        u_lu(j_lu, 1) = A_lu(j_lu, 1)
+    end do
+    do j_lu = 2, n_lu
+        l_lu(1, j_lu) = A_lu(1, j_lu) / u_lu(1, 1)
+    end do
+    do i_lu = 2, n_lu-1
+        do j_lu = 1, i_lu-1
+            u_lu(i_lu, i_lu) = u_lu(i_lu, i_lu) - l_lu(j_lu, i_lu) * u_lu(i_lu, j_lu)
+        end do
+        u_lu(i_lu, i_lu) = u_lu(i_lu, i_lu) + a_lu(i_lu, i_lu)
+        do j_lu = i_lu+1, n_lu
+            do k_lu = 1, i_lu-1
+                u_lu(j_lu, i_lu) = u_lu(j_lu, i_lu) - l_lu(k_lu, i_lu) * u_lu(j_lu, k_lu)
+                l_lu(i_lu, j_lu) = l_lu(i_lu, j_lu) - l_lu(k_lu, j_lu) * u_lu(i_lu, k_lu)
+            end do
+            u_lu(j_lu, i_lu) = u_lu(j_lu, i_lu) + a_lu(j_lu, i_lu)
+            l_lu(i_lu, j_lu) = (l_lu(i_lu, j_lu) + a_lu(i_lu, j_lu)) / u_lu(i_lu, i_lu)
+        end do
+    end do
+    do i_lu = 1, n_lu-1
+        u_lu(n_lu, n_lu) = u_lu(n_lu, n_lu) - l_lu(i_lu, n_lu) * u_lu(n_lu, i_lu)
+    end do
+    u_lu(n_lu, n_lu) = u_lu(n_lu, n_lu) + a_lu(n_lu, n_lu)
+    do i_lu = 1, n_lu
+        l_lu(i_lu, i_lu) = 1.0d0
+    end do
+    y_lu(1) = b_lu(1)
+    do i_lu = 2, n_lu
+        do j_lu = 1, i_lu-1
+            y_lu(i_lu) = y_lu(i_lu) - y_lu(j_lu) * l_lu(j_lu, i_lu)
+        end do
+        y_lu(i_lu) = y_lu(i_lu) + b_lu(i_lu)
+    end do
+    x_lu(n_lu) = y_lu(n_lu) / u_lu(n_lu, n_lu)
+    do i_lu = n_lu-1, 1, -1
+        do j_lu = i_lu+1, n_lu
+            x_lu(i_lu) = x_lu(i_lu) - x_lu(j_lu) * u_lu(j_lu, i_lu)
+        end do
+        x_lu(i_lu) = (x_lu(i_lu) + y_lu(i_lu)) / u_lu(i_lu, i_lu)
+    end do
+end subroutine
+
+
+
 subroutine data_processing() 
     IMPLICIT NONE
     call geo_process()

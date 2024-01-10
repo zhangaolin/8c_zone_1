@@ -18,12 +18,7 @@ real(TS_DOUBLE),allocatable :: z_leakage(:,:,:),r_leakage(:,:,:),theta_leakage(:
 real(TS_DOUBLE),allocatable :: r_leakage_temp(:,:,:),theta_leakage_temp(:,:,:),&
 &z_leakage_temp(:,:,:)
 
-real(TS_DOUBLE),allocatable :: a_ch(:),b_ch(:),c_ch(:),d_ch(:)&
-&,x_ch(:),y_ch(:),u_ch(:),l_ch(:)
-
 real(TS_DOUBLE),allocatable :: a(:),b(:),c(:) 
-
-integer :: num_ch,i_ch
 
 !real(TS_DOUBLE),allocatable :: coeff_a_z1(:,:,:),coeff_a_z2(:,:,:),coeff_a_z3(:,:,:)
 real(TS_DOUBLE),allocatable :: coeff_b_z1(:,:,:),coeff_b_z2(:,:,:),coeff_b_z3(:,:,:)
@@ -162,78 +157,76 @@ subroutine initialize() !initialize
                 a(i)=0.5*sub_r(i)
                 b(j)=0.5*sub_theta(j)
                 c(k)=0.5*sub_z(k)
-                j_axial_l(i,j,k)=1
-                j_axial_r(i,j,k)=1
-                j_radial_l(i,j,k)=1
-                j_radial_r(i,j,k)=1
-                j_circum_l(i,j,k)=1
-                j_circum_r(i,j,k)=1
-
-                coeff_b_r1(i,j,k)=1
-                coeff_b_r2(i,j,k)=1
-                coeff_b_r3(i,j,k)=1
-                coeff_c_r1(i,j,k)=1
-                coeff_c_r2(i,j,k)=1
-                coeff_c_r3(i,j,k)=1
-                coeff_d_r1(i,j,k)=1
-                coeff_d_r2(i,j,k)=1
-                coeff_d_r3(i,j,k)=1
-                coeff_e_r1(i,j,k)=1
-                coeff_e_r2(i,j,k)=1
-                coeff_e_r3(i,j,k)=1
-                coeff_f_r1(i,j,k)=1
-                coeff_f_r2(i,j,k)=1
-                coeff_f_r3(i,j,k)=1
-                coeff_g_r1(i,j,k)=1
-                coeff_g_r2(i,j,k)=1
-                coeff_g_r3(i,j,k)=1
-
-                coeff_b_z1(i,j,k)=1
-                coeff_b_z2(i,j,k)=1
-                coeff_b_z3(i,j,k)=1
-                coeff_c_z1(i,j,k)=1
-                coeff_c_z2(i,j,k)=1
-                coeff_c_z3(i,j,k)=1
-                coeff_d_z1(i,j,k)=1
-                coeff_d_z2(i,j,k)=1
-                coeff_d_z3(i,j,k)=1
-                coeff_e_z1(i,j,k)=1
-                coeff_e_z2(i,j,k)=1
-                coeff_e_z3(i,j,k)=1
-                coeff_f_z1(i,j,k)=1
-                coeff_f_z2(i,j,k)=1
-                coeff_f_z3(i,j,k)=1
-                coeff_g_z1(i,j,k)=1
-                coeff_g_z2(i,j,k)=1
-                coeff_g_z3(i,j,k)=1
-
-                coeff_b_th1(i,j,k)=1
-                coeff_b_th2(i,j,k)=1
-                coeff_b_th3(i,j,k)=1
-                coeff_c_th1(i,j,k)=1
-                coeff_c_th2(i,j,k)=1
-                coeff_c_th3(i,j,k)=1
-                coeff_d_th1(i,j,k)=1
-                coeff_d_th2(i,j,k)=1
-                coeff_d_th3(i,j,k)=1
-                coeff_e_th1(i,j,k)=1
-                coeff_e_th2(i,j,k)=1
-                coeff_e_th3(i,j,k)=1
-                coeff_f_th1(i,j,k)=1
-                coeff_f_th2(i,j,k)=1
-                coeff_f_th3(i,j,k)=1
-                coeff_g_th1(i,j,k)=1
-                coeff_g_th2(i,j,k)=1
-                coeff_g_th3(i,j,k)=1
-
-                coeff_q_r(i,j,k)=0
-                coeff_q_th(i,j,k)=0
-                coeff_q_z(i,j,k)=0
             end do
         end do
     end do
+    j_axial_l =1
+    j_axial_r =1
+    j_radial_l =1
+    j_radial_r =1
+    j_circum_l =1
+    j_circum_r =1
 
+    coeff_b_r1 =1
+    coeff_b_r2 =1
+    coeff_b_r3 =1
+    coeff_c_r1 =1
+    coeff_c_r2 =1
+    coeff_c_r3 =1
+    coeff_d_r1 =1
+    coeff_d_r2 =1
+    coeff_d_r3 =1
+    coeff_e_r1 =1
+    coeff_e_r2 =1
+    coeff_e_r3 =1
+    coeff_f_r1 =1
+    coeff_f_r2 =1
+    coeff_f_r3 =1
+    coeff_g_r1 =1
+    coeff_g_r2 =1
+    coeff_g_r3 =1
 
+    coeff_b_z1 =1
+    coeff_b_z2 =1
+    coeff_b_z3 =1
+    coeff_c_z1 =1
+    coeff_c_z2 =1
+    coeff_c_z3 =1
+    coeff_d_z1 =1
+    coeff_d_z2 =1
+    coeff_d_z3 =1
+    coeff_e_z1 =1
+    coeff_e_z2 =1
+    coeff_e_z3 =1
+    coeff_f_z1 =1
+    coeff_f_z2 =1
+    coeff_f_z3 =1
+    coeff_g_z1 =1
+    coeff_g_z2 =1
+    coeff_g_z3 =1
+
+    coeff_b_th1 =1
+    coeff_b_th2 =1
+    coeff_b_th3 =1
+    coeff_c_th1 =1
+    coeff_c_th2 =1
+    coeff_c_th3 =1
+    coeff_d_th1 =1
+    coeff_d_th2 =1
+    coeff_d_th3 =1
+    coeff_e_th1 =1
+    coeff_e_th2 =1
+    coeff_e_th3 =1
+    coeff_f_th1 =1
+    coeff_f_th2 =1
+    coeff_f_th3 =1
+    coeff_g_th1 =1
+    coeff_g_th2 =1
+    coeff_g_th3 =1
+
+    coeff_q_r =0
+    coeff_q_th =0
+    coeff_q_z =0
 end subroutine
 
 subroutine leakage_calculation() !计算横向泄漏
@@ -294,20 +287,7 @@ subroutine t_bound_calculation()!calculate boundary temperature for every node
 end subroutine
 
 
-subroutine chase()
-    implicit none
-    u_ch(1)=b_ch(1)
-    y_ch(1)=d_ch(1)
-    do i_ch=2,num_ch
-        l_ch(i_ch)=a_ch(i_ch)/u_ch(i_ch-1)
-        u_ch(i_ch)=b_ch(i_ch)-l_ch(i_ch)*c_ch(i_ch-1)
-        y_ch(i_ch)=d_ch(i_ch)-l_ch(i_ch)*y_ch(i_ch-1)
-    end do
-    x_ch(num_ch)=y_ch(num_ch)/u_ch(num_ch)
-    do i_ch=num_ch-1,1,-1
-        x_ch(i_ch)=(y_ch(i_ch)-c_ch(i_ch)*x_ch(i_ch+1))/u_ch(i_ch)
-    end do    
-end subroutine
+
 
 subroutine heatflux_update_z() !更新边界热流
     implicit none
@@ -516,38 +496,40 @@ subroutine heatflux_update_theta() !更新边界热流
             end do
         end do
     !matrix filling
-        num_ch=num_theta+1
-            !allocate chase parameters
-        allocate(a_ch(num_ch), b_ch(num_ch), c_ch(num_ch), d_ch(num_ch))
-        allocate(u_ch(num_ch), l_ch(num_ch), x_ch(num_ch), y_ch(num_ch))
-        do i=1,num_r
-            do k=1,num_z
-                do i_ch=2,num_ch-1
-                    a_ch(i_ch)=coeff_f_th2(i,i_ch,k)
-                    b_ch(i_ch)=coeff_f_th1(i,i_ch,k)-coeff_g_th2(i,i_ch+1,k)
-                    c_ch(i_ch)=-1*coeff_g_th1(i,i_ch+1,k)
-                    d_ch(i_ch)=coeff_g_th3(i,i_ch+1,k)*coeff_q_th(i,i_ch+1,k)-coeff_f_th3(i,i_ch,k)*coeff_q_th(i,j,i_ch)
-                end do
-                call chase()
-                !boundary condition
-                    !=============================!
-                    !===========undone============!
-                    !=============================!
-                do j=1,num_theta
-                    j_circum_r(i,j,k)=x_ch(j+1)
-                    j_circum_l(i,j,k)=x_ch(j)
-                end do
-            end do
-        end do
-    !deallocate chase parameters
-        deallocate(a_ch)
-        deallocate(b_ch)
-        deallocate(c_ch)
-        deallocate(d_ch)
-        deallocate(l_ch)
-        deallocate(u_ch)
-        deallocate(x_ch)
-        deallocate(y_ch)
+
+    !!matrix filling
+        ! num_ch=num_theta+1
+        !     !allocate chase parameters
+        ! allocate(a_ch(num_ch), b_ch(num_ch), c_ch(num_ch), d_ch(num_ch))
+        ! allocate(u_ch(num_ch), l_ch(num_ch), x_ch(num_ch), y_ch(num_ch))
+        ! do i=1,num_r
+        !     do k=1,num_z
+        !         do i_ch=2,num_ch-1
+        !             a_ch(i_ch)=coeff_f_th2(i,i_ch,k)
+        !             b_ch(i_ch)=coeff_f_th1(i,i_ch,k)-coeff_g_th2(i,i_ch+1,k)
+        !             c_ch(i_ch)=-1*coeff_g_th1(i,i_ch+1,k)
+        !             d_ch(i_ch)=coeff_g_th3(i,i_ch+1,k)*coeff_q_th(i,i_ch+1,k)-coeff_f_th3(i,i_ch,k)*coeff_q_th(i,j,i_ch)
+        !         end do
+        !         call chase()
+        !         !boundary condition
+        !             !=============================!
+        !             !===========undone============!
+        !             !=============================!
+        !         do j=1,num_theta
+        !             j_circum_r(i,j,k)=x_ch(j+1)
+        !             j_circum_l(i,j,k)=x_ch(j)
+        !         end do
+        !     end do
+        ! end do
+    !!deallocate chase parameters
+        ! deallocate(a_ch)
+        ! deallocate(b_ch)
+        ! deallocate(c_ch)
+        ! deallocate(d_ch)
+        ! deallocate(l_ch)
+        ! deallocate(u_ch)
+        ! deallocate(x_ch)
+        ! deallocate(y_ch)
 end subroutine
 
 
@@ -574,37 +556,37 @@ subroutine T_soild_average() !计算平均温度
 end subroutine
 
 subroutine driver_steady_ts_solver() !调用各个子例程求解温度
-IMPLICIT NONE
+    IMPLICIT NONE
 
-call initialize()
-timestep_solid=0
-call data_processing()
-do while(any(error_Tsolid > convergence_limit) .and. timestep_solid<100.)
-    call t_bound_calculation()
-    call T_soild_average()
-    !record old_t
-        do k=1,num_z
-            do j=1,num_theta
-                do i=1,num_r
-                    old_T_solid(i,j,k)=ts_ave(i,j,k)
+    call initialize()
+    timestep_solid=0
+    call data_processing()
+    do while(any(error_Tsolid > convergence_limit) .and. timestep_solid<100.)
+        call t_bound_calculation()
+        call T_soild_average()
+        !record old_t
+            do k=1,num_z
+                do j=1,num_theta
+                    do i=1,num_r
+                        old_T_solid(i,j,k)=ts_ave(i,j,k)
+                    end do
+                end do
+            end do  
+        call leakage_calculation()
+        call lambda_calculation()
+        call heatflux_update_z()
+        call heatflux_update_r()
+        !call heatflux_update_theta()
+        !calculate error_t
+            do k=1,num_z
+                do j=1,num_theta
+                    do i=1,num_r
+                        error_Tsolid(i,j,k)=(ts_ave(i,j,k)-old_T_solid(i,j,k))/ts_ave(i,j,k)
+                    end do
                 end do
             end do
-        end do  
-    call leakage_calculation()
-    call lambda_calculation()
-    call heatflux_update_z()
-    call heatflux_update_r()
-    !call heatflux_update_theta()
-    !calculate error_t
-        do k=1,num_z
-            do j=1,num_theta
-                do i=1,num_r
-                    error_Tsolid(i,j,k)=(ts_ave(i,j,k)-old_T_solid(i,j,k))/ts_ave(i,j,k)
-                end do
-            end do
-        end do
-    timestep_solid=timestep_solid+1  
-end do
+        timestep_solid=timestep_solid+1  
+    end do
 
 end subroutine
 
