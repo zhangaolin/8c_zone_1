@@ -288,250 +288,240 @@ end subroutine
 
 
 
-
-subroutine heatflux_update_z() !更新边界热流
-    implicit none
-
-    !calculation of coeffs
-        do k=1,num_z
-            do i=1,num_r
-                do j=1,num_theta
-                    coeff_b_z1(i,j,k)=0.5d0
-                    coeff_b_z2(i,j,k)=-0.5d0
-                    coeff_b_z3(i,j,k)=0.0d0
-
-                    coeff_c_z1(i,j,k)=0.5*alpha(i,j,k)/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
-                    coeff_c_z2(i,j,k)=0.5*alpha(i,j,k)/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
-                    coeff_c_z3(i,j,k)=-1.0/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
-
-
-                    coeff_d_z1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z1(i,j,k)+3*coeff_c_z1(i,j,k))
-                    coeff_d_z2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z2(i,j,k)+3*coeff_c_z2(i,j,k))
-                    coeff_d_z3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z3(i,j,k)+3*coeff_c_z3(i,j,k))
-
-                    coeff_e_z1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z1(i,j,k)-3*coeff_c_z1(i,j,k))
-                    coeff_e_z2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z2(i,j,k)-3*coeff_c_z2(i,j,k))
-                    coeff_e_z3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z3(i,j,k)-3*coeff_c_z3(i,j,k))
-
-                    heatflux_temp1=coeff_d_z1(i,j,k)*coeff_e_z2(i,j,k)-coeff_d_z2(i,j,k)*coeff_e_z1(i,j,k)
-
-                    coeff_f_z1(i,j,k)=coeff_e_z2(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_f_z2(i,j,k)=-1*coeff_d_z2(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_f_z3(i,j,k)=(coeff_d_z2(i,j,k)*coeff_e_z3(i,j,k)-coeff_d_z3(i,j,k)*&
-                    &coeff_e_z2(i,j,k))/heatflux_temp1(i,j,k)
-
-                    coeff_g_z1(i,j,k)=-1*coeff_e_z1(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_g_z2(i,j,k)=coeff_d_z1(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_g_z3(i,j,k)=(coeff_d_z3(i,j,k)*coeff_e_z1(i,j,k)-coeff_d_z1(i,j,k)*&
-                    &coeff_e_z3(i,j,k))/heatflux_temp1(i,j,k)
-
-                    coeff_q_z(i,j,k)=q_vir(i,j,k)-z_leakage(i,j,k)
-
-                end do
-            end do
-        end do
-    !matrix filling
-        num_ch=num_z+1
-            !allocate chase parameters
-        allocate(a_ch(num_ch), b_ch(num_ch), c_ch(num_ch), d_ch(num_ch))
-        allocate(u_ch(num_ch), l_ch(num_ch), x_ch(num_ch), y_ch(num_ch))
-        do i=1,num_r
-            do j=1,num_theta
-                do i_ch=2,num_ch-1
-                    a_ch(i_ch)=coeff_f_z2(i,j,i_ch)
-                    b_ch(i_ch)=coeff_f_z1(i,j,i_ch)-coeff_g_z2(i,j,i_ch+1)
-                    c_ch(i_ch)=-1*coeff_g_z1(i,j,i_ch+1)
-                    d_ch(i_ch)=coeff_g_z3(i,j,i_ch+1)*coeff_q_z(i,j,i_ch+1)-coeff_f_z3(i,j,i_ch)*coeff_q_z(i,j,i_ch)
-                end do
-                !boundary condition
-                    a_ch(1)=0
-                    b_ch(1)=1
-                    c_ch(1)=0
-                    d_ch(1)=0
-                    a_ch(num_ch)=coeff_f_r2(i,j,1)/303.15
-                    b_ch(num_ch)=coeff_f_r1(i,j,1)/303.15-1/(1000*303.15)
-                    c_ch(num_ch)=0
-                    d_ch(num_ch)=1-coeff_f_r3(i,j,num_z)/303.15*coeff_q_z(i,j,num_z)
-                call chase()
-                do k=1,num_z
-                    j_axial_r(i,j,k)=x_ch(k+1)
-                    j_axial_l(i,j,k)=x_ch(k)
-                end do
-            end do
-        end do
-
-    !deallocate chase parameters
-        deallocate(a_ch)
-        deallocate(b_ch)
-        deallocate(c_ch)
-        deallocate(d_ch)
-        deallocate(l_ch)
-        deallocate(u_ch)
-        deallocate(x_ch)
-        deallocate(y_ch)
-end subroutine
-
-subroutine heatflux_update_r() !更新边界热流
-    implicit none
-
-    !calculation of coeffs
-        do k=1,num_z
-            do i=1,num_r
-                do j=1,num_theta
-                    coeff_b_r1(i,j,k)=1.0d0/6.0d0
-                    coeff_b_r2(i,j,k)=1.0d0/6.0d0
-                    coeff_b_r3(i,j,k)=0.0d0
-
-                    coeff_c_r1(i,j,k)=(3*alpha(i,j,k)*r(i,j,k)*(a(i)**2)+(alpha(i,j,k)*a(i)**3-3*a(i)*lambda(i,j,k)))&
-                    &/(6*alpha(i,j,k)*r(i,j,k)*(a(i)**2)+18*lambda(i,j,k)*r(i,j,k))
-                    coeff_c_r2(i,j,k)=(3*alpha(i,j,k)*r(i,j,k)*(a(i)**2)-(alpha(i,j,k)*a(i)**3-3*a(i)*lambda(i,j,k)))&
-                    &/(6*alpha(i,j,k)*r(i,j,k)*(a(i)**2)+18*lambda(i,j,k)*r(i,j,k))
-                    coeff_c_r3(i,j,k)=-1.0d0*(a(i)**2)/(alpha(i,j,k)*a(i)**2+3*lambda(i,j,k))
-
-
-                    coeff_d_r1(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r1(i,j,k)+coeff_c_r1(i,j,k))
-                    coeff_d_r2(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r2(i,j,k)+coeff_c_r2(i,j,k))
-                    coeff_d_r3(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r3(i,j,k)+coeff_c_r3(i,j,k))
-
-                    coeff_e_r1(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r1(i,j,k)-coeff_c_r1(i,j,k))
-                    coeff_e_r2(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r2(i,j,k)-coeff_c_r2(i,j,k))
-                    coeff_e_r3(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r3(i,j,k)-coeff_c_r3(i,j,k))
-
-                    heatflux_temp1=coeff_d_r1(i,j,k)*coeff_e_r2(i,j,k)-coeff_d_r2(i,j,k)*coeff_e_r1(i,j,k)
-
-                    coeff_f_r1(i,j,k)=coeff_e_r2(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_f_r2(i,j,k)=-1*coeff_d_r2(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_f_r3(i,j,k)=(coeff_d_r2(i,j,k)*coeff_e_r3(i,j,k)-coeff_d_r3(i,j,k)*&
-                    &coeff_e_r2(i,j,k))/heatflux_temp1(i,j,k)
-
-                    coeff_g_r1(i,j,k)=-1*coeff_e_r1(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_g_r2(i,j,k)=coeff_d_r1(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_g_r3(i,j,k)=(coeff_d_r3(i,j,k)*coeff_e_r1(i,j,k)-coeff_d_r1(i,j,k)*&
-                    &coeff_e_r3(i,j,k))/heatflux_temp1(i,j,k)
-
-                    coeff_q_r(i,j,k)=q_vir(i,j,k)-r_leakage(i,j,k)
-                end do
-            end do
-        end do
-    !matrix filling
-        num_ch=num_r+1
-            !allocate chase parameters
-        allocate(a_ch(num_ch), b_ch(num_ch), c_ch(num_ch), d_ch(num_ch))
-        allocate(u_ch(num_ch), l_ch(num_ch), x_ch(num_ch), y_ch(num_ch))
-        do k=1,num_z
-            do j=1,num_theta
-                do i_ch=2,num_ch-1
-                    a_ch(i_ch)=coeff_f_r2(i_ch,j,k)
-                    b_ch(i_ch)=coeff_f_r1(i_ch,j,k)-coeff_g_r2(i_ch+1,j,k)
-                    c_ch(i_ch)=-1*coeff_g_r1(i_ch+1,j,k)
-                    d_ch(i_ch)=coeff_g_r3(i_ch+1,j,k)*coeff_q_r(i_ch+1,j,k)-coeff_f_r3(i_ch,j,k)*coeff_q_r(i_ch,j,k)
-                end do
-                !boundary condition
-                    a_ch(1)=0
-                    b_ch(1)=1
-                    c_ch(1)=0
-                    d_ch(1)=0
-                    a_ch(num_ch)=0
-                    b_ch(num_ch)=1
-                    c_ch(num_ch)=0
-                    d_ch(num_ch)=0
-                call chase()
+!subroutine heatflux_update 更新边界热流
+    subroutine heatflux_update_z()
+        implicit none
+        !calculation of coeffs
+            do k=1,num_z
                 do i=1,num_r
-                    j_radial_r(i,j,k)=x_ch(i+1)
-                    j_radial_l(i,j,k)=x_ch(i)
+                    do j=1,num_theta
+                        coeff_b_z1(i,j,k)=0.5d0
+                        coeff_b_z2(i,j,k)=-0.5d0
+                        coeff_b_z3(i,j,k)=0.0d0
+
+                        coeff_c_z1(i,j,k)=0.5*alpha(i,j,k)/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
+                        coeff_c_z2(i,j,k)=0.5*alpha(i,j,k)/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
+                        coeff_c_z3(i,j,k)=-1.0/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
+
+
+                        coeff_d_z1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z1(i,j,k)+3*coeff_c_z1(i,j,k))
+                        coeff_d_z2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z2(i,j,k)+3*coeff_c_z2(i,j,k))
+                        coeff_d_z3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z3(i,j,k)+3*coeff_c_z3(i,j,k))
+
+                        coeff_e_z1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z1(i,j,k)-3*coeff_c_z1(i,j,k))
+                        coeff_e_z2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z2(i,j,k)-3*coeff_c_z2(i,j,k))
+                        coeff_e_z3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z3(i,j,k)-3*coeff_c_z3(i,j,k))
+
+                        heatflux_temp1=coeff_d_z1(i,j,k)*coeff_e_z2(i,j,k)-coeff_d_z2(i,j,k)*coeff_e_z1(i,j,k)
+
+                        coeff_f_z1(i,j,k)=coeff_e_z2(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_f_z2(i,j,k)=-1*coeff_d_z2(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_f_z3(i,j,k)=(coeff_d_z2(i,j,k)*coeff_e_z3(i,j,k)-coeff_d_z3(i,j,k)*&
+                        &coeff_e_z2(i,j,k))/heatflux_temp1(i,j,k)
+
+                        coeff_g_z1(i,j,k)=-1*coeff_e_z1(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_g_z2(i,j,k)=coeff_d_z1(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_g_z3(i,j,k)=(coeff_d_z3(i,j,k)*coeff_e_z1(i,j,k)-coeff_d_z1(i,j,k)*&
+                        &coeff_e_z3(i,j,k))/heatflux_temp1(i,j,k)
+
+                        coeff_q_z(i,j,k)=q_vir(i,j,k)-z_leakage(i,j,k)
+
+                    end do
                 end do
             end do
-        end do
-
-    !deallocate chase parameters
-        deallocate(a_ch)
-        deallocate(b_ch)
-        deallocate(c_ch)
-        deallocate(d_ch)
-        deallocate(l_ch)
-        deallocate(u_ch)
-        deallocate(x_ch)
-        deallocate(y_ch)
-end subroutine
-
-
-subroutine heatflux_update_theta() !更新边界热流
-    implicit none
-
-    !calculation of coeffs
-        do k=1,num_z
+        !solving heatflux
+            num_ch=num_z+1
+            allocate(a_ch(num_ch), b_ch(num_ch), c_ch(num_ch), d_ch(num_ch))
+            allocate(u_ch(num_ch), l_ch(num_ch), x_ch(num_ch), y_ch(num_ch))    
             do i=1,num_r
                 do j=1,num_theta
-                    coeff_b_th1(i,j,k)=0.5d0
-                    coeff_b_th2(i,j,k)=-0.5d0
-                    coeff_b_th3(i,j,k)=0.0d0
-
-                    coeff_c_th1(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(c(k)**2))
-                    coeff_c_th2(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(c(k)**2))
-                    coeff_c_th3(i,j,k)=-1.0d0/(alpha(i,j,k)+3*lambda(i,j,k)/((r(i,j,k)*c(k))**2))
-
-
-                    coeff_d_th1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th1(i,j,k)+3*coeff_c_th1(i,j,k))
-                    coeff_d_th2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th2(i,j,k)+3*coeff_c_th2(i,j,k))
-                    coeff_d_th3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th3(i,j,k)+3*coeff_c_th3(i,j,k))
-
-                    coeff_e_th1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th1(i,j,k)-3*coeff_c_th1(i,j,k))
-                    coeff_e_th2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th2(i,j,k)-3*coeff_c_th2(i,j,k))
-                    coeff_e_th3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th3(i,j,k)-3*coeff_c_th3(i,j,k))
-
-                    heatflux_temp1=coeff_d_th1(i,j,k)*coeff_e_th2(i,j,k)-coeff_d_th2(i,j,k)*coeff_e_th1(i,j,k)
-
-                    coeff_f_th1(i,j,k)=coeff_e_th2(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_f_th2(i,j,k)=-1*coeff_d_th2(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_f_th3(i,j,k)=(coeff_d_th2(i,j,k)*coeff_e_th3(i,j,k)-coeff_d_th3(i,j,k)*&
-                    &coeff_e_th2(i,j,k))/heatflux_temp1(i,j,k)
-
-                    coeff_g_th1(i,j,k)=-1*coeff_e_th1(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_g_th2(i,j,k)=coeff_d_th1(i,j,k)/heatflux_temp1(i,j,k)
-                    coeff_g_th3(i,j,k)=(coeff_d_th3(i,j,k)*coeff_e_th1(i,j,k)-coeff_d_th1(i,j,k)*&
-                    &coeff_e_th3(i,j,k))/heatflux_temp1(i,j,k)
-
-                    coeff_q_th(i,j,k)=q_vir(i,j,k)-theta_leakage(i,j,k)
+                    !matrix filling
+                        do i_ch=2,num_ch-1
+                            a_ch(i_ch)=coeff_f_z2(i,j,i_ch)
+                            b_ch(i_ch)=coeff_f_z1(i,j,i_ch)-coeff_g_z2(i,j,i_ch+1)
+                            c_ch(i_ch)=-1*coeff_g_z1(i,j,i_ch+1)
+                            d_ch(i_ch)=coeff_g_z3(i,j,i_ch+1)*coeff_q_z(i,j,i_ch+1)-coeff_f_z3(i,j,i_ch)*coeff_q_z(i,j,i_ch)
+                        end do
+                    !boundary condition
+                        a_ch(1)=0
+                        b_ch(1)=1
+                        c_ch(1)=0
+                        d_ch(1)=0
+                        a_ch(num_ch)=coeff_f_r2(i,j,1)/303.15
+                        b_ch(num_ch)=coeff_f_r1(i,j,1)/303.15-1/(1000*303.15)
+                        c_ch(num_ch)=0
+                        d_ch(num_ch)=1-coeff_f_r3(i,j,num_z)/303.15*coeff_q_z(i,j,num_z)
+                    !matrix solving               
+                        call chase()
+                        do k=1,num_z
+                            j_axial_r(i,j,k)=x_ch(k+1)
+                            j_axial_l(i,j,k)=x_ch(k)
+                        end do
                 end do
             end do
-        end do
-    !matrix filling
+            deallocate(a_ch,b_ch,c_ch,d_ch,l_ch,u_ch,x_ch,y_ch)
+    end subroutine
 
-    !!matrix filling
-        ! num_ch=num_theta+1
-        !     !allocate chase parameters
-        ! allocate(a_ch(num_ch), b_ch(num_ch), c_ch(num_ch), d_ch(num_ch))
-        ! allocate(u_ch(num_ch), l_ch(num_ch), x_ch(num_ch), y_ch(num_ch))
-        ! do i=1,num_r
-        !     do k=1,num_z
-        !         do i_ch=2,num_ch-1
-        !             a_ch(i_ch)=coeff_f_th2(i,i_ch,k)
-        !             b_ch(i_ch)=coeff_f_th1(i,i_ch,k)-coeff_g_th2(i,i_ch+1,k)
-        !             c_ch(i_ch)=-1*coeff_g_th1(i,i_ch+1,k)
-        !             d_ch(i_ch)=coeff_g_th3(i,i_ch+1,k)*coeff_q_th(i,i_ch+1,k)-coeff_f_th3(i,i_ch,k)*coeff_q_th(i,j,i_ch)
-        !         end do
-        !         call chase()
-        !         !boundary condition
-        !             !=============================!
-        !             !===========undone============!
-        !             !=============================!
-        !         do j=1,num_theta
-        !             j_circum_r(i,j,k)=x_ch(j+1)
-        !             j_circum_l(i,j,k)=x_ch(j)
-        !         end do
-        !     end do
-        ! end do
-    !!deallocate chase parameters
-        ! deallocate(a_ch)
-        ! deallocate(b_ch)
-        ! deallocate(c_ch)
-        ! deallocate(d_ch)
-        ! deallocate(l_ch)
-        ! deallocate(u_ch)
-        ! deallocate(x_ch)
-        ! deallocate(y_ch)
-end subroutine
 
+    subroutine heatflux_update_r() 
+        implicit none
+        !calculation of coeffs
+            do k=1,num_z
+                do i=1,num_r
+                    do j=1,num_theta
+                        coeff_b_r1(i,j,k)=1.0d0/6.0d0
+                        coeff_b_r2(i,j,k)=1.0d0/6.0d0
+                        coeff_b_r3(i,j,k)=0.0d0
+
+                        coeff_c_r1(i,j,k)=(3*alpha(i,j,k)*r(i,j,k)*(a(i)**2)+(alpha(i,j,k)*a(i)**3-3*a(i)*lambda(i,j,k)))&
+                        &/(6*alpha(i,j,k)*r(i,j,k)*(a(i)**2)+18*lambda(i,j,k)*r(i,j,k))
+                        coeff_c_r2(i,j,k)=(3*alpha(i,j,k)*r(i,j,k)*(a(i)**2)-(alpha(i,j,k)*a(i)**3-3*a(i)*lambda(i,j,k)))&
+                        &/(6*alpha(i,j,k)*r(i,j,k)*(a(i)**2)+18*lambda(i,j,k)*r(i,j,k))
+                        coeff_c_r3(i,j,k)=-1.0d0*(a(i)**2)/(alpha(i,j,k)*a(i)**2+3*lambda(i,j,k))
+
+
+                        coeff_d_r1(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r1(i,j,k)+coeff_c_r1(i,j,k))
+                        coeff_d_r2(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r2(i,j,k)+coeff_c_r2(i,j,k))
+                        coeff_d_r3(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r3(i,j,k)+coeff_c_r3(i,j,k))
+
+                        coeff_e_r1(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r1(i,j,k)-coeff_c_r1(i,j,k))
+                        coeff_e_r2(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r2(i,j,k)-coeff_c_r2(i,j,k))
+                        coeff_e_r3(i,j,k)=-3.0d0*lambda(i,j,k)/a(i)*(coeff_b_r3(i,j,k)-coeff_c_r3(i,j,k))
+
+                        heatflux_temp1=coeff_d_r1(i,j,k)*coeff_e_r2(i,j,k)-coeff_d_r2(i,j,k)*coeff_e_r1(i,j,k)
+
+                        coeff_f_r1(i,j,k)=coeff_e_r2(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_f_r2(i,j,k)=-1*coeff_d_r2(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_f_r3(i,j,k)=(coeff_d_r2(i,j,k)*coeff_e_r3(i,j,k)-coeff_d_r3(i,j,k)*&
+                        &coeff_e_r2(i,j,k))/heatflux_temp1(i,j,k)
+
+                        coeff_g_r1(i,j,k)=-1*coeff_e_r1(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_g_r2(i,j,k)=coeff_d_r1(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_g_r3(i,j,k)=(coeff_d_r3(i,j,k)*coeff_e_r1(i,j,k)-coeff_d_r1(i,j,k)*&
+                        &coeff_e_r3(i,j,k))/heatflux_temp1(i,j,k)
+
+                        coeff_q_r(i,j,k)=q_vir(i,j,k)-r_leakage(i,j,k)
+                    end do
+                end do
+            end do
+        !solving heatflux
+            num_ch=num_r+1
+            allocate(a_ch(num_ch), b_ch(num_ch), c_ch(num_ch), d_ch(num_ch))
+            allocate(u_ch(num_ch), l_ch(num_ch), x_ch(num_ch), y_ch(num_ch))
+            do k=1,num_z
+                do j=1,num_theta
+                    !matrix filling
+                        do i_ch=2,num_ch-1
+                            a_ch(i_ch)=coeff_f_r2(i_ch,j,k)
+                            b_ch(i_ch)=coeff_f_r1(i_ch,j,k)-coeff_g_r2(i_ch+1,j,k)
+                            c_ch(i_ch)=-1*coeff_g_r1(i_ch+1,j,k)
+                            d_ch(i_ch)=coeff_g_r3(i_ch+1,j,k)*coeff_q_r(i_ch+1,j,k)-coeff_f_r3(i_ch,j,k)*coeff_q_r(i_ch,j,k)
+                        end do
+                    !boundary condition
+                        a_ch(1)=0
+                        b_ch(1)=1
+                        c_ch(1)=0
+                        d_ch(1)=0
+                        a_ch(num_ch)=0
+                        b_ch(num_ch)=1
+                        c_ch(num_ch)=0
+                        d_ch(num_ch)=0
+                    ! matrix solving   
+                        call chase()
+                        do i=1,num_r
+                            j_radial_r(i,j,k)=x_ch(i+1)
+                            j_radial_l(i,j,k)=x_ch(i)
+                        end do
+                end do
+            end do
+            deallocate(a_ch,b_ch,c_ch,d_ch,l_ch,u_ch,x_ch,y_ch)
+    end subroutine
+
+
+    subroutine heatflux_update_theta() 
+        implicit none
+        !calculation of coeffs
+            do k=1,num_z
+                do i=1,num_r
+                    do j=1,num_theta
+                        coeff_b_th1(i,j,k)=0.5d0
+                        coeff_b_th2(i,j,k)=-0.5d0
+                        coeff_b_th3(i,j,k)=0.0d0
+
+                        coeff_c_th1(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(c(k)**2))
+                        coeff_c_th2(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(c(k)**2))
+                        coeff_c_th3(i,j,k)=-1.0d0/(alpha(i,j,k)+3*lambda(i,j,k)/((r(i,j,k)*c(k))**2))
+
+
+                        coeff_d_th1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th1(i,j,k)+3*coeff_c_th1(i,j,k))
+                        coeff_d_th2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th2(i,j,k)+3*coeff_c_th2(i,j,k))
+                        coeff_d_th3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th3(i,j,k)+3*coeff_c_th3(i,j,k))
+
+                        coeff_e_th1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th1(i,j,k)-3*coeff_c_th1(i,j,k))
+                        coeff_e_th2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th2(i,j,k)-3*coeff_c_th2(i,j,k))
+                        coeff_e_th3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th3(i,j,k)-3*coeff_c_th3(i,j,k))
+
+                        heatflux_temp1=coeff_d_th1(i,j,k)*coeff_e_th2(i,j,k)-coeff_d_th2(i,j,k)*coeff_e_th1(i,j,k)
+
+                        coeff_f_th1(i,j,k)=coeff_e_th2(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_f_th2(i,j,k)=-1*coeff_d_th2(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_f_th3(i,j,k)=(coeff_d_th2(i,j,k)*coeff_e_th3(i,j,k)-coeff_d_th3(i,j,k)*&
+                        &coeff_e_th2(i,j,k))/heatflux_temp1(i,j,k)
+
+                        coeff_g_th1(i,j,k)=-1*coeff_e_th1(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_g_th2(i,j,k)=coeff_d_th1(i,j,k)/heatflux_temp1(i,j,k)
+                        coeff_g_th3(i,j,k)=(coeff_d_th3(i,j,k)*coeff_e_th1(i,j,k)-coeff_d_th1(i,j,k)*&
+                        &coeff_e_th3(i,j,k))/heatflux_temp1(i,j,k)
+
+                        coeff_q_th(i,j,k)=q_vir(i,j,k)-theta_leakage(i,j,k)
+                    end do
+                end do
+            end do
+        !solving heatflux
+            n_lu=num_theta
+            allocate(a_lu(n_lu,n_lu),l_lu(n_lu,n_lu),u_lu(n_lu,n_lu))
+            allocate(x_lu(n_lu),y_lu(n_lu),b_lu(n_lu))
+            a_lu = 0.0d0
+            l_lu = 0.0d0
+            u_lu = 0.0d0
+            y_lu = 0.0d0
+            x_lu = 0.0d0
+            do i=1,num_r
+                do k=1,num_z
+                    !matrix filling
+                        do j=1,num_theta
+                            if(j == 1.)then
+                                a_lu(1,j)=coeff_f_th1(i,j,k)-coeff_g_th2(i,j+1,k)
+                                a_lu(2,j)=-1*coeff_g_th1(i,j+1,k)
+                                a_lu(num_theta,j)=coeff_f_th2(i,j,k)
+                                b_lu(j)=coeff_g_th3(i,j+1,k)*coeff_q_th(i,j+1,k)-coeff_f_th3(i,j,k)*coeff_q_th(i,j,k)                               
+                            else if(j == num_theta)then
+                                a_lu(1,j)=-1*coeff_g_th1(i,1,k)
+                                a_lu(num_theta-1,num_theta)=coeff_f_th2(i,j,k)
+                                a_lu(num_theta,num_theta)=coeff_f_th2(i,j,k)-coeff_g_th2(i,1,k)
+                                b_lu(j)=coeff_g_th3(i,1,k)*coeff_q_th(i,1,k)-coeff_f_th3(i,j,k)*coeff_q_th(i,j,k)                               
+                            else 
+                                a_lu(j-1,j)=coeff_f_th2(i,j,k)
+                                a_lu(j,j)=coeff_f_th1(i,j,k)-coeff_g_th2(i,j+1,k)
+                                a_lu(j+1,j)=-1*coeff_g_th1(i,j+1,k)
+                                b_lu(j)=coeff_g_th3(i,j+1,k)*coeff_q_th(i,j+1,k)-coeff_f_th3(i,j,k)*coeff_q_th(i,j,k)                               
+                            end if
+                        end do
+                    !matrix solving  
+                        call lu_solve()
+                        do  j=1,num_theta
+                            j_circum_r(i,j,k)=x_lu(j)
+                            if(j ==1.)then
+                                j_circum_l(i,j,k)=x_lu(num_theta)
+                            else
+                                j_circum_l(i,j,k)=x_lu(j-1)
+                            end if
+                        end do
+                end do
+            end do            
+            deallocate(a_lu,b_lu,x_lu,y_lu,l_lu,u_lu)
+    end subroutine
+!=========================================
 
 
 
@@ -560,6 +550,7 @@ subroutine driver_steady_ts_solver() !调用各个子例程求解温度
 
     call initialize()
     timestep_solid=0
+    error_Tsolid=1.
     call data_processing()
     do while(any(error_Tsolid > convergence_limit) .and. timestep_solid<100.)
         call t_bound_calculation()
@@ -576,7 +567,7 @@ subroutine driver_steady_ts_solver() !调用各个子例程求解温度
         call lambda_calculation()
         call heatflux_update_z()
         call heatflux_update_r()
-        !call heatflux_update_theta()
+        call heatflux_update_theta()
         !calculate error_t
             do k=1,num_z
                 do j=1,num_theta

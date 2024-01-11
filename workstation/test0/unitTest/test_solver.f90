@@ -9,7 +9,7 @@ program test_solver
 
     call chase_test()
    ! call lu_test()
-    call lu_test_from_src()
+    !call lu_test_from_src()
 end program
 
 subroutine chase_test()
@@ -108,37 +108,37 @@ subroutine lu_test()
     write(*,*)'test_lu:x_lu=',x_lu
 end subroutine
 
-subroutine lu_test_from_src()
-    implicit none
-    real(8),allocatable :: a_lu(:,:),b_lu(:),l_lu(:,:),u_lu(:,:),y_lu(:),x_lu(:)
-    integer :: i_lu,j_lu, k_lu,n_lu
-    n_lu=4
-    allocate(x_lu(n_lu), y_lu(n_lu), b_lu(n_lu))
-    allocate(l_lu(n_lu, n_lu), u_lu(n_lu, n_lu),a_lu(n_lu, n_lu))
-    a_lu(1,1) = 9.0d0
-    a_lu(1,2) = 18.0d0
-    a_lu(1,3) = 9.0d0
-    a_lu(1,4) = -27.0d0
+! subroutine lu_test_from_src()
+!     implicit none
+!     real(8),allocatable :: a_lu(:,:),b_lu(:),l_lu(:,:),u_lu(:,:),y_lu(:),x_lu(:)
+!     integer :: i_lu,j_lu, k_lu,n_lu
+!     n_lu=4
+!     allocate(x_lu(n_lu), y_lu(n_lu), b_lu(n_lu))
+!     allocate(l_lu(n_lu, n_lu), u_lu(n_lu, n_lu),a_lu(n_lu, n_lu))
+!     a_lu(1,1) = 9.0d0
+!     a_lu(1,2) = 18.0d0
+!     a_lu(1,3) = 9.0d0
+!     a_lu(1,4) = -27.0d0
 
-    a_lu(2,1) = 18.0d0
-    a_lu(2,2) = 45.0d0
-    a_lu(2,3) = 0.0d0
-    a_lu(2,4) = -45.0d0
+!     a_lu(2,1) = 18.0d0
+!     a_lu(2,2) = 45.0d0
+!     a_lu(2,3) = 0.0d0
+!     a_lu(2,4) = -45.0d0
 
-    a_lu(3,1) = 9.0d0
-    a_lu(3,2) = 0.0d0
-    a_lu(3,3) = 126.0d0
-    a_lu(3,4) = 9.0d0
+!     a_lu(3,1) = 9.0d0
+!     a_lu(3,2) = 0.0d0
+!     a_lu(3,3) = 126.0d0
+!     a_lu(3,4) = 9.0d0
 
-    a_lu(4,1) = -27.0d0
-    a_lu(4,2) = -45.0d0
-    a_lu(4,3) = 9.0d0
-    a_lu(4,4) = 135.0d0
+!     a_lu(4,1) = -27.0d0
+!     a_lu(4,2) = -45.0d0
+!     a_lu(4,3) = 9.0d0
+!     a_lu(4,4) = 135.0d0
 
-    b_lu = (/1,2,16,8/)
-    call lu_solve()
-    write(*,*)'test_lu_from_src :x_lu=',x_lu
-    end subroutine
+!     b_lu = (/1,2,16,8/)
+!     call lu_solve()
+!     write(*,*)'test_lu_from_src :x_lu=',x_lu
+!    end subroutine
 
 
 

@@ -1,36 +1,12 @@
 module DataProcess !data processing
-
 use GlobalTSVariables
 use GlobalTSConstants
 use driver_input_test
-
 IMPLICIT NONE
 
 contains
 
-! subroutine channel_approximation() !流道近似，调整节块尺寸
-!implicit none
-!!================undone==================================
-! end subroutine
-
-! subroutine alpha_calculation() !计算每个节块的固气换热系数
-!     IMPLICIT NONE
-!     real(TS_KDUBLE),allocatable :: alpha(:,:,:)
-!     allocate(alpha(z_num,r_num,theta_num)) 
-!     do i=1,z_num
-!         do j=1,r_num
-!             do k=1,theta_num
-!                 if(composition_solidmodule(node_config(i,j,k))%phase_type == 3.)then
-!                     alpha(i,j,k)=h_solidmodule(i,j,k)*6*(1-composition_solidmodule(node_config(i,j,k))%epsilon)/pebble_diameter 
-!                 else 
-!                     alpha(i,j,k)=0
-!                 end if
-!             end do
-!         end do
-!     end do
-! end subroutine
-
-
+!==========================!!unused for test0!!===============================
 subroutine geo_process() !calculate radial length and volume for every node
     !r_calculate
     allocate(r(num_r,num_z,num_theta))  
@@ -53,22 +29,26 @@ subroutine geo_process() !calculate radial length and volume for every node
     end do
     end do
 end subroutine
+!=============================================================================
 
 
+!==========================!!passed for test0!!===============================
 subroutine alpha_calculate() !only for test0,give alpha as 0 for every node
     allocate(alpha(num_r,num_z,num_theta))
     do i=1,num_r
         do j=1,num_theta
             do k=1,num_z
                 if(cfg(i,j,k)==1.)then
-                    alpha(i,j,k)=0
+                    alpha(i,j,k)=0 !modify here
                 else if(cfg(i,j,k)==2.)then
-                    alpha(i,j,k)=0
+                    alpha(i,j,k)=0 !modify here
                 end if
             end do
         end do
     end do
 end subroutine
+!=============================================================================
+
 
 subroutine q_calculate() 
     allocate(power_den(num_r,num_z,num_theta))
@@ -103,12 +83,8 @@ subroutine chase()
 end subroutine
 
 
-subroutine lu_solve()
+subroutine lu_solve() !2024.1.11 test passed
     implicit none
-    l_lu = 0.0d0
-    u_lu = 0.0d0
-    y_lu = 0.0d0
-    x_lu = 0.0d0
     do j_lu = 1, n_lu
         u_lu(j_lu, 1) = A_lu(j_lu, 1)
     end do
@@ -152,7 +128,36 @@ subroutine lu_solve()
     end do
 end subroutine
 
+subroutine lu_solve_test() 
+    implicit none
+    n_lu=4
+    allocate(a_lu(n_lu,n_lu),l_lu(n_lu,n_lu),u_lu(n_lu,n_lu))
+    allocate(x_lu(n_lu),y_lu(n_lu),b_lu(n_lu))
+    a_lu=0.0d0
+    a_lu(1,1) = 9.0d0
+    a_lu(1,2) = 18.0d0
+    a_lu(1,3) = 9.0d0
+    a_lu(1,4) = -27.0d0
 
+    a_lu(2,1) = 18.0d0
+    a_lu(2,2) = 45.0d0
+    a_lu(2,4) = -45.0d0
+
+    a_lu(3,1) = 9.0d0
+    a_lu(3,3) = 126.0d0
+    a_lu(3,4) = 9.0d0
+
+    a_lu(4,1) = -27.0d0
+    a_lu(4,2) = -45.0d0
+    a_lu(4,3) = 9.0d0
+    a_lu(4,4) = 135.0d0
+
+    b_lu = (/1,2,16,8/)
+    call lu_solve()
+    write(*,*)'from src/dataprocess/lu_solve/test:all elements of x_lu should be (1/9)'
+    write(*,*)'from src/dataprocess/lu_solve/test:x_lu=',x_lu
+    deallocate(a_lu,b_lu,x_lu,y_lu,l_lu,u_lu)
+end subroutine
 
 subroutine data_processing() 
     IMPLICIT NONE
@@ -163,4 +168,28 @@ subroutine data_processing()
    ! call alpha_calculation()
 end subroutine
 
+
+! subroutine channel_approximation() !流道近似，调整节块尺寸
+!implicit none
+!!================undone==================================
+! end subroutine
+
+! subroutine alpha_calculation() !计算每个节块的固气换热系数
+!     IMPLICIT NONE
+!     real(TS_KDUBLE),allocatable :: alpha(:,:,:)
+!     allocate(alpha(z_num,r_num,theta_num)) 
+!     do i=1,z_num
+!         do j=1,r_num
+!             do k=1,theta_num
+!                 if(composition_solidmodule(node_config(i,j,k))%phase_type == 3.)then
+!                     alpha(i,j,k)=h_solidmodule(i,j,k)*6*(1-composition_solidmodule(node_config(i,j,k))%epsilon)/pebble_diameter 
+!                 else 
+!                     alpha(i,j,k)=0
+!                 end if
+!             end do
+!         end do
+!     end do
+! end subroutine
+
 end  module
+

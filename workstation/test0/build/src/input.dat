@@ -1,0 +1,74 @@
+!case test
+!导热部分的临时输入卡，后续耦合时另行整合
+!geometry
+PebbleDiameter 3
+Axial_node_num  4
+Radial_node_num  4
+Circumferential_node_num  4 
+Axial_node_size 25 25 10 10
+Radial_node_size 5 5 5 5
+Circumferential_node_size 90 90 90 90
+!Boundary Condition
+bc_axial_left 1
+bc_axial_right 3
+bc_side 1
+!config(z1)
+config               1 1 1 1 
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
+                                        
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
+                     2 2 2 2
+
+T_gas_solidmodule    1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+h_solidmodule        1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
+                     1 1 1 1
