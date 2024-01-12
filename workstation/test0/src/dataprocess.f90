@@ -50,6 +50,7 @@ end subroutine
 !=============================================================================
 
 
+!==========================!!passed for test0!!===============================
 subroutine q_calculate() 
     allocate(power_den(num_r,num_z,num_theta))
     allocate(q_vir(num_r,num_z,num_theta))
@@ -66,7 +67,10 @@ subroutine q_calculate()
         end do
     end do
 end subroutine
+!=============================================================================
 
+
+!=============================!!test passed!!=================================
 subroutine chase()
     implicit none
     u_ch(1)=b_ch(1)
@@ -81,9 +85,11 @@ subroutine chase()
         x_ch(i_ch)=(y_ch(i_ch)-c_ch(i_ch)*x_ch(i_ch+1))/u_ch(i_ch)
     end do    
 end subroutine
+!=============================================================================
 
 
-subroutine lu_solve() !2024.1.11 test passed
+!=============================!!test passed!!=================================
+subroutine lu_solve() 
     implicit none
     do j_lu = 1, n_lu
         u_lu(j_lu, 1) = A_lu(j_lu, 1)
@@ -127,7 +133,10 @@ subroutine lu_solve() !2024.1.11 test passed
         x_lu(i_lu) = (x_lu(i_lu) + y_lu(i_lu)) / u_lu(i_lu, i_lu)
     end do
 end subroutine
+!=============================================================================
 
+
+!=============================!!test passed!!=================================
 subroutine lu_solve_test() 
     implicit none
     n_lu=4
@@ -158,6 +167,8 @@ subroutine lu_solve_test()
     write(*,*)'from src/dataprocess/lu_solve/test:x_lu=',x_lu
     deallocate(a_lu,b_lu,x_lu,y_lu,l_lu,u_lu)
 end subroutine
+!=============================================================================
+
 
 subroutine data_processing() 
     IMPLICIT NONE

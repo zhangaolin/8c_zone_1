@@ -19,6 +19,7 @@ real(TS_DOUBLE),allocatable :: r_leakage_temp(:,:,:),theta_leakage_temp(:,:,:),&
 &z_leakage_temp(:,:,:)
 
 real(TS_DOUBLE),allocatable :: a(:),b(:),c(:) 
+real(TS_DOUBLE),allocatable :: temp_1(:,:,:),temp_2(:,:,:)
 
 !real(TS_DOUBLE),allocatable :: coeff_a_z1(:,:,:),coeff_a_z2(:,:,:),coeff_a_z3(:,:,:)
 real(TS_DOUBLE),allocatable :: coeff_b_z1(:,:,:),coeff_b_z2(:,:,:),coeff_b_z3(:,:,:)
@@ -227,6 +228,11 @@ subroutine initialize() !initialize
     coeff_q_r =0
     coeff_q_th =0
     coeff_q_z =0
+
+    lambda=1
+    timestep_solid=0
+    error_Tsolid=1
+    ts_ave=30
 end subroutine
 
 subroutine leakage_calculation() !计算横向泄漏
@@ -301,7 +307,7 @@ end subroutine
 
                         coeff_c_z1(i,j,k)=0.5*alpha(i,j,k)/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
                         coeff_c_z2(i,j,k)=0.5*alpha(i,j,k)/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
-                        coeff_c_z3(i,j,k)=-1.0/(alpha(i,j,k)+3*lambda(i,j,k)/(c(k)**2))
+                        coeff_c_z3(i,j,k)=-c(k)*c(k)/(alpha(i,j,k)*c(k)*c(k)+3*lambda(i,j,k))
 
 
                         coeff_d_z1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_z1(i,j,k)+3*coeff_c_z1(i,j,k))
@@ -441,25 +447,26 @@ end subroutine
     subroutine heatflux_update_theta() 
         implicit none
         !calculation of coeffs
+            coeff_b_th1=0.5d0
+            coeff_b_th2=-0.5d0
+            coeff_b_th3=0.0d0
             do k=1,num_z
                 do i=1,num_r
                     do j=1,num_theta
-                        coeff_b_th1(i,j,k)=0.5d0
-                        coeff_b_th2(i,j,k)=-0.5d0
-                        coeff_b_th3(i,j,k)=0.0d0
-
-                        coeff_c_th1(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(c(k)**2))
-                        coeff_c_th2(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(c(k)**2))
-                        coeff_c_th3(i,j,k)=-1.0d0/(alpha(i,j,k)+3*lambda(i,j,k)/((r(i,j,k)*c(k))**2))
 
 
-                        coeff_d_th1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th1(i,j,k)+3*coeff_c_th1(i,j,k))
-                        coeff_d_th2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th2(i,j,k)+3*coeff_c_th2(i,j,k))
-                        coeff_d_th3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th3(i,j,k)+3*coeff_c_th3(i,j,k))
+                        coeff_c_th1(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(b(j)**2))
+                        coeff_c_th2(i,j,k)=0.5d0*alpha(i,j,k)/(alpha(i,j,k)+3/(r(i,j,k)**2)*lambda(i,j,k)/(b(j)**2))
+                        coeff_c_th3(i,j,k)=-1.0d0/(alpha(i,j,k)+3*lambda(i,j,k)/((r(i,j,k)*b(j))**2))
 
-                        coeff_e_th1(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th1(i,j,k)-3*coeff_c_th1(i,j,k))
-                        coeff_e_th2(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th2(i,j,k)-3*coeff_c_th2(i,j,k))
-                        coeff_e_th3(i,j,k)=-1*lambda(i,j,k)/c(k)*(coeff_b_th3(i,j,k)-3*coeff_c_th3(i,j,k))
+
+                        coeff_d_th1(i,j,k)=-1*lambda(i,j,k)/b(j)*(coeff_b_th1(i,j,k)+3*coeff_c_th1(i,j,k))
+                        coeff_d_th2(i,j,k)=-1*lambda(i,j,k)/b(j)*(coeff_b_th2(i,j,k)+3*coeff_c_th2(i,j,k))
+                        coeff_d_th3(i,j,k)=-1*lambda(i,j,k)/b(j)*(coeff_b_th3(i,j,k)+3*coeff_c_th3(i,j,k))
+
+                        coeff_e_th1(i,j,k)=-1*lambda(i,j,k)/b(j)*(coeff_b_th1(i,j,k)-3*coeff_c_th1(i,j,k))
+                        coeff_e_th2(i,j,k)=-1*lambda(i,j,k)/b(j)*(coeff_b_th2(i,j,k)-3*coeff_c_th2(i,j,k))
+                        coeff_e_th3(i,j,k)=-1*lambda(i,j,k)/b(j)*(coeff_b_th3(i,j,k)-3*coeff_c_th3(i,j,k))
 
                         heatflux_temp1=coeff_d_th1(i,j,k)*coeff_e_th2(i,j,k)-coeff_d_th2(i,j,k)*coeff_e_th1(i,j,k)
 
@@ -477,6 +484,7 @@ end subroutine
                     end do
                 end do
             end do
+            write(*,*)'heatflux_temp_th=',heatflux_temp1
         !solving heatflux
             n_lu=num_theta
             allocate(a_lu(n_lu,n_lu),l_lu(n_lu,n_lu),u_lu(n_lu,n_lu))
@@ -519,22 +527,18 @@ end subroutine
                         end do
                 end do
             end do            
-            deallocate(a_lu,b_lu,x_lu,y_lu,l_lu,u_lu)
+            
     end subroutine
 !=========================================
 
 
-
 subroutine T_soild_average() !计算平均温度
     implicit none
-    real(TS_DOUBLE),allocatable :: temp_1(:,:,:),temp_2(:,:,:)
-    allocate(temp_1(num_r,num_theta,num_z))
-    allocate(temp_2(num_r,num_theta,num_z))
-
+    allocate(temp_1(num_r,num_theta,num_z),temp_2(num_r,num_theta,num_z))
     do k=1,num_z
         do j=1,num_theta
             do i=1,num_r
-                temp_1(i,j,k)=alpha(i,j,k)+3*lambda(i,j,k)*(1/(a(i)*a(i))+1/((b(j)*r(i,j,k))**2)+1/(c(k)*c(k)))
+                temp_1(i,j,k)=alpha(i,j,k)+3*lambda(i,j,k)*(1.0d0/(a(i)*a(i))+1.0d0/((b(j)*r(i,j,k))**2)+1.0d0/(c(k)*c(k)))
                 temp_2(i,j,k)=(a(i)*(t_radial_r(i,j,k)-t_radial_l(i,j,k))/6+r(i,j,k)*((0.5+a(i)/(6*r(i,j,k)))*t_radial_r(i,j,k)+&
                 &(0.5-a(i)/(6*r(i,j,k)))*t_radial_l(i,j,k)))/(r(i,j,k)*a(i)*a(i))+&
                 &(t_axial_l(i,j,k)+t_axial_r(i,j,k))/(2*c(k)*c(k))+(t_circum_l(i,j,k)+t_circum_r(i,j,k))/(2*((b(j)*r(i,j,k))**2))
@@ -542,19 +546,15 @@ subroutine T_soild_average() !计算平均温度
             end do
         end do
     end do
-
+    deallocate(temp_1,temp_2)
 end subroutine
 
 subroutine driver_steady_ts_solver() !调用各个子例程求解温度
     IMPLICIT NONE
 
     call initialize()
-    timestep_solid=0
-    error_Tsolid=1.
     call data_processing()
     do while(any(error_Tsolid > convergence_limit) .and. timestep_solid<100.)
-        call t_bound_calculation()
-        call T_soild_average()
         !record old_t
             do k=1,num_z
                 do j=1,num_theta
@@ -563,16 +563,28 @@ subroutine driver_steady_ts_solver() !调用各个子例程求解温度
                     end do
                 end do
             end do  
+        call t_bound_calculation()
+        call T_soild_average()
+
         call leakage_calculation()
+        !write(*,*)'leakage:',z_leakage
         call lambda_calculation()
         call heatflux_update_z()
         call heatflux_update_r()
         call heatflux_update_theta()
+        ! if(timestep_solid ==1.)then
+        !     do i=1,num_theta
+        !         write(*,*)'matrix a_lu:',a_lu(:,i)
+        !     end do
+        ! end if
+        deallocate(a_lu,b_lu,x_lu,y_lu,l_lu,u_lu)
+        ! write(*,*)'timestep=',timestep_solid,'j_axial_l:',j_axial_l
+        ! write(*,*)'timestep=',timestep_solid,'j_axial_r:',j_axial_r
         !calculate error_t
             do k=1,num_z
                 do j=1,num_theta
                     do i=1,num_r
-                        error_Tsolid(i,j,k)=(ts_ave(i,j,k)-old_T_solid(i,j,k))/ts_ave(i,j,k)
+                        error_Tsolid(i,j,k)=abs((ts_ave(i,j,k)-old_T_solid(i,j,k))/ts_ave(i,j,k))
                     end do
                 end do
             end do
